@@ -1,0 +1,19 @@
+[0615/214652:WARNING:resource_bundle.cc(269)] locale_file_path.empty()
+[0615/214700:WARNING:resource_bundle.cc(269)] locale_file_path.empty()
+[0615/214703:WARNING:content_browser_client.cc(393)] No browser info matching process id 10 and view id 0
+[0615/214703:WARNING:content_browser_client.cc(393)] No browser info matching process id 10 and view id 0
+[0615/214934:WARNING:resource_bundle.cc(269)] locale_file_path.empty()
+[0615/222911:ERROR:content_client.cc(101)] No data resource available for id 4747
+[0615/223221:ERROR:content_client.cc(89)] No localized string available for id 28000
+[0615/223221:ERROR:content_client.cc(89)] No localized string available for id 28001
+[0615/223221:ERROR:content_client.cc(89)] No localized string available for id 28013
+[0615/223221:ERROR:content_client.cc(89)] No localized string available for id 28014
+[0615/224838:ERROR:content_client.cc(89)] No localized string available for id 28000
+[0615/224838:ERROR:content_client.cc(89)] No localized string available for id 28001
+[0615/224838:ERROR:content_client.cc(89)] No localized string available for id 28013
+[0615/224838:ERROR:content_client.cc(89)] No localized string available for id 28014
+[0615/224846:ERROR:content_client.cc(89)] No localized string available for id 28000
+[0615/224846:ERROR:content_client.cc(89)] No localized string available for id 28001
+[0615/224846:ERROR:content_client.cc(89)] No localized string available for id 28013
+[0615/224846:ERROR:content_client.cc(89)] No localized string available for id 28014
+[0615/225720:WARNING:resource_bundle.cc(269)] locale_file_path.empty()
