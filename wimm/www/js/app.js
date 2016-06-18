@@ -29,4 +29,24 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
+  .state('app.wallets', {
+    url: '/wallets',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/wallets.html',
+        controller: 'WalletsController'
+      }
+    }
+  })
+  .state('app.wallet', {
+    url: '/wallets/:walletId',
+    views: {
+      'menuContent': {
+	      templateUrl: 'templates/wallet.html',
+        controller: 'WalletController'
+      }
+    }
+  });
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/wallets');
 });
