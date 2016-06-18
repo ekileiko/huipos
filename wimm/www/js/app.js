@@ -46,6 +46,24 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'WalletController'
       }
     }
+  })
+  .state('app.currencies', {
+    url: '/currencies',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/currencies.html',
+        controller: 'CurrenciesController'
+      }
+    }
+  })
+  .state('app.currency', {
+    url: '/currencies/:currencyId',
+    views: {
+      'menuContent': {
+	      templateUrl: 'templates/currency.html',
+        controller: 'CurrencyController'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/wallets');
