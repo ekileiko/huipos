@@ -1,11 +1,14 @@
-app.service('CurrenciesService', function(){
+app.service('CurrenciesService', ['$cordovaSQLite', function($cordovaSQLite){
     console.log('CurrenciesService...');
 
-    var currencies = [
-        { id: 840, code: 'USD', title: 'US Dollar' },
-        { id: 978, code: 'EUR', title: 'Euro', },
-        { id: 974, code: 'BYR', title: 'Belarussian Ruble', },
-    ];
+    var currencies = [];
+
+    $cordovaSQLite.execute(db, "SELECT * FROM currency")
+      .then(function(res) {
+        for(var i = 0; i < res.rows.length; i++) {
+          currencies.push(res.rows.item(i));
+        }
+      });
 
     return {
         getCurrencies: function(){
@@ -25,5 +28,5 @@ app.service('CurrenciesService', function(){
                 }
             }
         }
-    }
-})
+    };
+}]);

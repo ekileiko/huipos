@@ -1,11 +1,14 @@
-app.service('WalletsService', function(){
+app.service('WalletsService', ['$cordovaSQLite', function($cordovaSQLite){
     console.log('WalletsService...');
 
-    var wallets = [
-        { title: '[USD] Wallet', id: 1 },
-        { title: '[USD] Visa', id: 2 },
-        { title: '[USD] Master Card', id: 3 },
-    ];
+    var wallets = [];
+
+        $cordovaSQLite.execute(db, "SELECT * FROM wallet")
+      .then(function(res) {
+        for(var i = 0; i < res.rows.length; i++) {
+          wallets.push(res.rows.item(i));
+        }
+      });
 
     return {
         getWallets: function(){
@@ -18,5 +21,5 @@ app.service('WalletsService', function(){
                 }
             }
         }
-    }
-})
+    };
+}]);

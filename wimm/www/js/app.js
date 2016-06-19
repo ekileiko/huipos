@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $cordovaSQLite, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+
+    if (window.cordova) {
+      db = $cordovaSQLite.openDB({ name: "wimm.db" }); //device
+    } else {
+      db = window.openDatabase("wimm.db", '1', 'my', 1024 * 1024 * 100); // browser
+    }
+
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currency (id integer primary key, code text, title text)");
+    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (840, 'USD', 'US Dollar')");
+    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (978, 'EUR', 'Euro')");
+    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
+
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, title text)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (1, '[USD] Wallet')");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (2, '[USD] Visa')");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (3, '[USD] Master Card')");
   });
 })
 
