@@ -27,15 +27,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
       db = window.openDatabase("wimm.db", '1', 'my', 1024 * 1024 * 100); // browser
     }
 
+    // TODO: Temporary
+    $cordovaSQLite.execute(db, "DROP TABLE currency");
+    $cordovaSQLite.execute(db, "DROP TABLE wallet");
+
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currency (id integer primary key, code text, title text)");
     $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (840, 'USD', 'US Dollar')");
     $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (978, 'EUR', 'Euro')");
     $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
 
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, title text)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (1, '[USD] Wallet')");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (2, '[USD] Visa')");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title) values (3, '[USD] Master Card')");
+    // type: 1 - cash, 2 - credit card
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, title text, type integer)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (1, '[USD] Wallet', 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (2, '[USD] Visa', 2)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (3, '[USD] Master Card', 2)");
   });
 })
 
