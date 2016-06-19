@@ -37,10 +37,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
 
     // type: 1 - cash, 2 - credit card
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, title text, type integer)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (1, '[USD] Wallet', 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (2, '[USD] Visa', 2)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type) values (3, '[USD] Master Card', 2)");
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, title text, type integer, enabled integer)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type, enabled) values (1, '[USD] Wallet', 1, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type, enabled) values (2, '[USD] Visa', 2, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, title, type, enabled) values (3, '[USD] Master Card', 2, 0)");
   });
 })
 
