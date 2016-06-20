@@ -1,4 +1,4 @@
-var app = angular.module('starter.controllers', []);
+var app = angular.module('starter.controllers', ['isoCurrency']);
 
 app.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
