@@ -1,4 +1,4 @@
-app.service('CurrenciesService', ['$cordovaSQLite', function($cordovaSQLite){
+app.service('CurrenciesService', function($cordovaSQLite){
     console.log('CurrenciesService...');
 
     var currencies = [];
@@ -29,4 +29,4 @@ app.service('CurrenciesService', ['$cordovaSQLite', function($cordovaSQLite){
             }
         }
     };
-}]);
+});
