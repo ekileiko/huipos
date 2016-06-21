@@ -60,6 +60,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
       }
     }
   })
+  .state('app.blank', {
+    url: '/blank',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/blank.html',
+        controller: 'BlankController'
+      }
+    }
+  })
   .state('app.wallet', {
     url: '/wallets/:walletId',
     views: {
@@ -88,5 +97,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/wallets');
+  $urlRouterProvider.otherwise('/app/blank');
 });
