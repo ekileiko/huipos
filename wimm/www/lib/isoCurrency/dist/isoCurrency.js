@@ -902,6 +902,7 @@ angular.module('isoCurrency', ['isoCurrency.common']).filter('isoCurrency', ["$f
 		}
 
 		var fractionSize = fraction === void 0 ? currency.fraction : fraction;
-		return $filter('currency')(amount, currency.symbol || currencyCode + ' ', fractionSize);
+		//return $filter('currency')(amount, currency.symbol || currencyCode + ' ', fractionSize);
+		return $filter('customCurrency')(amount, currency.symbol || currencyCode + ' ', fractionSize);
 	};
 }]);
