@@ -113,5 +113,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/categories');
+  $urlRouterProvider.otherwise('/app/blank');
 });
