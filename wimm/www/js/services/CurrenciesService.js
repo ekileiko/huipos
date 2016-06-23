@@ -3,7 +3,7 @@ app.service('CurrenciesService', function($cordovaSQLite){
 
     var currencies = [];
 
-    $cordovaSQLite.execute(db, "SELECT * FROM currency")
+    $cordovaSQLite.execute(db, "SELECT * FROM currencies")
       .then(function(res) {
         for(var i = 0; i < res.rows.length; i++) {
           currencies.push(res.rows.item(i));

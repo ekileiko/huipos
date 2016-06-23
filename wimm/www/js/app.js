@@ -28,19 +28,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     }
 
     // TODO: Temporary
-    $cordovaSQLite.execute(db, "DROP TABLE currency");
-    $cordovaSQLite.execute(db, "DROP TABLE wallet");
+    $cordovaSQLite.execute(db, "DROP TABLE currencies");
+    $cordovaSQLite.execute(db, "DROP TABLE wallets");
 
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currency (id integer primary key, code text, title text)");
-    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (840, 'USD', 'US Dollar')");
-    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (978, 'EUR', 'Euro')");
-    $cordovaSQLite.execute(db, "INSERT INTO currency (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currencies (id integer primary key, code text, title text)");
+    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (840, 'USD', 'US Dollar')");
+    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (978, 'EUR', 'Euro')");
+    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
 
     // type: 1 - cash, 2 - credit card
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallet (id integer primary key, currencyId integer, title text, type integer, enabled integer)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, currencyId, title, type, enabled) values (1, 974, '[BYR] Wallet', 1, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, currencyId, title, type, enabled) values (2, 840, '[USD] Visa', 2, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallet (id, currencyId, title, type, enabled) values (3, 978, '[EUR] Master Card', 2, 0)");
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallets (id integer primary key, currencyId integer, title text, type integer, enabled integer)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (1, 974, '[BYR] Wallet', 1, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (2, 840, '[USD] Visa', 2, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (3, 978, '[EUR] Master Card', 2, 0)");
   });
 })
 

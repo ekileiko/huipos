@@ -4,7 +4,7 @@ app.service('WalletsService', function($cordovaSQLite, CurrenciesService){
     var wallets = [];
 
     $cordovaSQLite
-        .execute(db, "SELECT * FROM wallet")
+        .execute(db, "SELECT * FROM wallets")
         .then(function(res) {
             for(var i = 0; i < res.rows.length; i++) {
                 var wallet = res.rows.item(i);
