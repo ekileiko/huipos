@@ -28,9 +28,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     }
 
     // TODO: Temporary
-    $cordovaSQLite.execute(db, "DROP TABLE currencies");
-    $cordovaSQLite.execute(db, "DROP TABLE wallets");
+    $cordovaSQLite.execute(db, "DROP TABLE operations");
     $cordovaSQLite.execute(db, "DROP TABLE categories");
+    $cordovaSQLite.execute(db, "DROP TABLE wallets");
+    $cordovaSQLite.execute(db, "DROP TABLE currencies");
 
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currencies (id integer primary key, code text, title text)");
     $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (840, 'USD', 'US Dollar')");
@@ -48,6 +49,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (1, 0, 'Salary', 1, 1)");
     $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (2, 0, 'Products', 0, 1)");
     $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (3, 2, 'Fruits', 0, 0)");
+
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS operations ("
+      + "id integer primary key"
+      + ",type integer"                 // 0 - expense, 1 - income, 2 - transfer
+      + ",date datetime"
+      + ",quantity real"
+      + ",sumPerUnit real"
+      + ",rate real"
+      + ",rateType integer"             // 0 - currencySum = sumPerUnit * rate, 1 - currencySum = sumPerUnit / rate
+      + ",currencySum real"
+      + ",comment text"
+      + ",accountId integer"            // destination account for income opertion, source account for expense and transfer operations
+      + ",destinationAccountId integer" // destination account for transfer operation
+      + ",categoryId integer"           // source category for income opertion, destination category for expense operation
+      + ")");
   });
 })
 
