@@ -30,6 +30,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     // TODO: Temporary
     $cordovaSQLite.execute(db, "DROP TABLE currencies");
     $cordovaSQLite.execute(db, "DROP TABLE wallets");
+    $cordovaSQLite.execute(db, "DROP TABLE categories");
 
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currencies (id integer primary key, code text, title text)");
     $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (840, 'USD', 'US Dollar')");
@@ -41,6 +42,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (1, 974, '[BYR] Wallet', 1, 1)");
     $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (2, 840, '[USD] Visa', 2, 1)");
     $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (3, 978, '[EUR] Master Card', 2, 0)");
+  
+    // type: 0 - expense, 1 - income
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS categories (id integer primary key, parentId integer, name text, type integer, isDefault integer)");
+    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (1, 0, 'Salary', 1, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (2, 0, 'Products', 0, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (3, 2, 'Fruits', 0, 0)");
   });
 })
 
@@ -95,7 +102,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
         controller: 'CurrencyController'
       }
     }
+  })
+  .state('app.categories', {
+    url: '/categories',
+    views: {
+      'menuContent': {
+	      templateUrl: 'templates/categories.html',
+        controller: 'CategoriesController'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/blank');
+  $urlRouterProvider.otherwise('/app/categories');
 });
