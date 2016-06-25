@@ -39,10 +39,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
 
     // type: 1 - cash, 2 - credit card
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallets (id integer primary key, currencyId integer, title text, type integer, enabled integer)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (1, 974, '[BYR] Wallet', 1, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (2, 840, '[USD] Visa', 2, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled) values (3, 978, '[EUR] Master Card', 2, 0)");
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallets (id integer primary key, currencyId integer, title text, type integer, enabled integer, startBalance real)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (1, 974, '[BYR] Wallet', 1, 1, 250000)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (2, 840, '[USD] Visa', 2, 1, 17)");
+    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (3, 978, '[EUR] Master Card', 2, 0, 0)");
   
     // type: 0 - expense, 1 - income
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS categories (id integer primary key, parentId integer, name text, type integer, isDefault integer)");
@@ -64,6 +64,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
       + ",destinationAccountId integer" // destination account for transfer operation
       + ",categoryId integer"           // source category for income opertion, destination category for expense operation
       + ")");
+    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, quantity, sumPerUnit, comment, accountId, categoryId) "
+      + "values (1, 1, '"+Date.now()+"', 1, 1000, 'First Salary', 1, 1)");
+    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, quantity, sumPerUnit, comment, accountId, categoryId) "
+      + "values (2, 0, '"+Date.now()+"', 1, 100, 'First expense', 1, 3)");
+    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, sumPerUnit, rate, rateType, comment, accountId, destinationAccountId) "
+      + "values (3, 2, '"+Date.now()+"', 275, 1.1, 1, 'First transfer to deposit!', 1, 2)");
   });
 })
 
@@ -74,21 +80,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-  .state('app.wallets', {
-    url: '/wallets',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/wallets.html',
-        controller: 'WalletsController'
-      }
-    }
-  })
   .state('app.blank', {
     url: '/blank',
     views: {
       'menuContent': {
         templateUrl: 'templates/blank.html',
         controller: 'BlankController'
+      }
+    }
+  })
+  .state('app.wallets', {
+    url: '/wallets',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/wallets.html',
+        controller: 'WalletsController'
       }
     }
   })
@@ -125,6 +131,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
       'menuContent': {
 	      templateUrl: 'templates/categories.html',
         controller: 'CategoriesController'
+      }
+    }
+  })
+  .state('app.operations', {
+    url: '/operations',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/operations.html',
+        controller: 'OperationsController'
+      }
+    }
+  })
+  .state('app.operation', {
+    url: '/operations/:operationId',
+    views: {
+      'menuContent': {
+	      templateUrl: 'templates/operation.html',
+        controller: 'OperationController'
       }
     }
   });
