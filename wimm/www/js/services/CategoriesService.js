@@ -3,14 +3,11 @@ app.service('CategoriesService', function($cordovaSQLite){
 
     var categories = [];
 
-    $cordovaSQLite
-        .execute(db, "SELECT * FROM categories")
-        .then(function(res) {
-            for(var i = 0; i < res.rows.length; i++) {
-                var category = res.rows.item(i);
-                categories.push(category);
-            }
-        });
+    db.rel.find('category').then(function(data){
+        for (var i = 0; i < data['categories'].length; i ++) {
+            categories.push(data['categories'][i]);
+        }
+    });
 
     return {
         getCategories: function(){

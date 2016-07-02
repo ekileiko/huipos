@@ -3,15 +3,11 @@ app.service('WalletsService', function($cordovaSQLite, CurrenciesService){
 
     var wallets = [];
 
-    $cordovaSQLite
-        .execute(db, "SELECT * FROM wallets")
-        .then(function(res) {
-            for(var i = 0; i < res.rows.length; i++) {
-                var wallet = res.rows.item(i);
-                wallet.currency = CurrenciesService.getCurrencyById(wallet.currencyId);
-                wallets.push(wallet);
-            }
-        });
+    db.rel.find('wallet').then(function(data){
+        for (var i = 0; i < data['wallets'].length; i ++) {
+            wallets.push(data['wallets'][i]);
+        }
+    });
 
     return {
         getWallets: function(){
