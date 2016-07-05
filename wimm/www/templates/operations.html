@@ -1,9 +1,14 @@
 <ion-view view-title="Operations">
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="operation in operations" href="#/app/operations/{{operation.id}}">
-        {{operation.comment}}
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content>
+        <ion-list class="animate-ripple">
+            <ion-item ng-repeat="operation in operations" href="#/app/operations/{{operation.id}}">
+                <span ng-switch="operation.type">
+                    <i ng-switch-when="0" class="icon ion-arrow-swap calm"></i>
+                    <i ng-switch-when="1" class="icon ion-plus balanced"></i>
+                    <i ng-switch-when="2" class="icon ion-minus assertive"></i>
+                </span>
+                {{operation.comment}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>
