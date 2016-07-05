@@ -3,14 +3,11 @@ app.service('OperationsService', function($cordovaSQLite){
 
     var operations = [];
 
-    $cordovaSQLite
-        .execute(db, "SELECT * FROM operations")
-        .then(function(res) {
-            for(var i = 0; i < res.rows.length; i++) {
-                var operation = res.rows.item(i);
-                operations.push(operation);
-            }
-        });
+    db.rel.find('operation').then(function(data){
+        for (var i = 0; i < data['operations'].length; i ++) {
+            operations.push(data['operations'][i]);
+        }
+    });
 
     return {
         getOperations: function(){

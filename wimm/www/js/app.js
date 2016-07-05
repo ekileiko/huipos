@@ -20,56 +20,53 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'ng
       StatusBar.styleDefault();
     }
 
-
-    if (window.cordova) {
-      db = $cordovaSQLite.openDB({ name: "wimm.db", iosDatabaseLocation: 'default' }); //device
-    } else {
-      db = window.openDatabase("wimm.db", '1', 'my', 1024 * 1024 * 100); // browser
-    }
-
+    console.log('starting app');
     // TODO: Temporary
-    $cordovaSQLite.execute(db, "DROP TABLE operations");
-    $cordovaSQLite.execute(db, "DROP TABLE categories");
-    $cordovaSQLite.execute(db, "DROP TABLE wallets");
-    $cordovaSQLite.execute(db, "DROP TABLE currencies");
+    db = new PouchDB('wimmDb');
 
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS currencies (id integer primary key, code text, title text)");
-    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (840, 'USD', 'US Dollar')");
-    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (978, 'EUR', 'Euro')");
-    $cordovaSQLite.execute(db, "INSERT INTO currencies (id, code, title) values (974, 'BYR', 'Belorussian Ruble')");
+    db.setSchema([
+      { singular: 'currency', plural: 'currencies' },
+      { singular: 'wallet', plural: 'wallets' },
+      { singular: 'category', plural: 'categories' },
+      { singular: 'operation', plural: 'operations' },
+      { singular: 'config', plural: 'configs' }
+    ]);
 
-    // type: 1 - cash, 2 - credit card
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS wallets (id integer primary key, currencyId integer, title text, type integer, enabled integer, startBalance real)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (1, 974, '[BYR] Wallet', 1, 1, 250000)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (2, 840, '[USD] Visa', 2, 1, 17)");
-    $cordovaSQLite.execute(db, "INSERT INTO wallets (id, currencyId, title, type, enabled, startBalance) values (3, 978, '[EUR] Master Card', 2, 0, 0)");
-  
-    // type: 0 - expense, 1 - income
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS categories (id integer primary key, parentId integer, name text, type integer, isDefault integer)");
-    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (1, 0, 'Salary', 1, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (2, 0, 'Products', 0, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO categories (id, parentId, name, type, isDefault) values (3, 2, 'Fruits', 0, 0)");
+    db.rel.find('config', 1).then(function (data) {
+      if (data['configs'] && data['configs'][0] && data['configs'][0].value) {
+        console.log('db already initialized');
+        // already initialized
+      } else {
+      // need initialization
+        console.log('db is needed for initialization');
+        db.rel.save('config', {
+          id: 1, key: 'firstAppInit', value: true, 
+        });
 
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS operations ("
-      + "id integer primary key"
-      + ",type integer"                 // 0 - expense, 1 - income, 2 - transfer
-      + ",date datetime"
-      + ",quantity real"
-      + ",sumPerUnit real"
-      + ",rate real"
-      + ",rateType integer"             // 0 - currencySum = sumPerUnit * rate, 1 - currencySum = sumPerUnit / rate
-      + ",currencySum real"
-      + ",comment text"
-      + ",accountId integer"            // destination account for income opertion, source account for expense and transfer operations
-      + ",destinationAccountId integer" // destination account for transfer operation
-      + ",categoryId integer"           // source category for income opertion, destination category for expense operation
-      + ")");
-    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, quantity, sumPerUnit, comment, accountId, categoryId) "
-      + "values (1, 1, '"+Date.now()+"', 1, 1000, 'First Salary', 1, 1)");
-    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, quantity, sumPerUnit, comment, accountId, categoryId) "
-      + "values (2, 0, '"+Date.now()+"', 1, 100, 'First expense', 1, 3)");
-    $cordovaSQLite.execute(db, "INSERT INTO operations (id, type, date, sumPerUnit, rate, rateType, comment, accountId, destinationAccountId) "
-      + "values (3, 2, '"+Date.now()+"', 275, 1.1, 1, 'First transfer to deposit!', 1, 2)");
+        db.rel.save('currency', { id: 840, code: 'USD', title: 'US Dollar'});
+        db.rel.save('currency', { id: 978, code: 'EUR', title: 'Euro' });
+        db.rel.save('currency', { id: 974, code: 'BYR', title: 'Belorussian Ruble' });
+        
+        // type: 1 - cash, 2 - credit card
+        db.rel.save('wallet', { id: 1, currencyId: 840, title: '[USD] Visa', type: 2, enabled: 1, startBalance: 17 });
+        db.rel.save('wallet', { id: 2, currencyId: 978, title: '[EUR] Master Card', type: 2, enabled: 0, startBalance: 0 });
+        db.rel.save('wallet', { id: 3, currencyId: 974, title: '[BYR] Wallet', type: 1, enabled: 1, startBalance: 250000 });
+      
+        // type: 0 - expense, 1 - income  
+        db.rel.save('category', { id: 1, parentId: 0, name: 'Salary', type: 1, isDefault: 1 });    
+        db.rel.save('category', { id: 2, parentId: 0, name: 'Products', type: 0, isDefault: 1 });    
+        db.rel.save('category', { id: 3, parentId: 2, name: 'Fruits', type: 0, isDefault: 0 });
+
+        // type: 0 - expense, 1 - income, 2 - transfer
+        // rateType: 0 - currencySum = sumPerUnit * rate, 1 - currencySum = sumPerUnit / rate
+        // accountId: destination account for income opertion, source account for expense and transfer operations
+        // destinationAccountId: destination account for transfer operation
+        // categoryId: source category for income opertion, destination category for expense operation
+        db.rel.save('operation', { id: 1, type: 1, date: Date.now(), quantity: 1, sumPerUnit: 1000, comment: 'First Salary!', accountId: 1, categoryId: 1 });
+        db.rel.save('operation', { id: 2, type: 0, date: Date.now(), quantity: 1, sumPerUnit: 100, comment: 'First expense!', accountId: 1, categoryId: 3 });
+        db.rel.save('operation', { id: 3, type: 2, date: Date.now(), sumPerUnit: 275, rate: 1.1, rateType: 1, comment: 'First transfer to deposit!', accountId: 1, destinationAccountId: 2 });
+      }
+    });
   });
 })
 
