@@ -1,6 +1,6 @@
 <ion-view view-title="Operations">
     <ion-content>
-        <ion-list class="animate-ripple">
+        <ion-list>
             <ion-item ng-repeat="operation in operations" href="#/app/operations/{{operation.id}}">
                 <span ng-switch="operation.type">
                     <i ng-switch-when="0" class="icon ion-arrow-swap calm"></i>
